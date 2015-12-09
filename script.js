@@ -1,4 +1,4 @@
-//Testing VS Code Git support
+
 
 var map = L.map('map').setView([39.739800, -104.911276], 11);
 
