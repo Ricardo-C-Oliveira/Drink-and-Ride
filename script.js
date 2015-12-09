@@ -1,3 +1,5 @@
+//Testing VS Code Git support
+
 var map = L.map('map').setView([39.739800, -104.911276], 11);
 
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
