@@ -13,27 +13,6 @@ var bndStyle = {
   "opacity": 0.5
 };
 
-// var linesStyle = {
-//   "color": "#00ffba",
-//   "weight": 5,
-//   "opacity": 1
-// };
-//
-// $.getJSON("https://darkvengers.cartodb.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM lines", function(data) {
-//   lines = L.geoJson(data, {
-//     style: linesStyle
-//   }).addTo(map).bringToBack();
-// })
-
-var geojsonMarkerOptions = {
-  radius: 8,
-  fillColor: "#ff7800",
-  color: "#000",
-  weight: 1,
-  opacity: 1,
-  fillOpacity: 0.8
-};
-
 var stationIcon = L.divIcon({
   className: 'fa-stationIcon',
   html: '<i class="fa fa-subway fa-2x"></i>',
@@ -62,8 +41,6 @@ stations = $.getJSON("https://darkvengers.cartodb.com/api/v2/sql?format=GeoJSON&
   map.fitBounds(stations.getBounds());
 })
 
-
-
 function onClick(e) {
   lat = this.getLatLng().lat;
   lng = this.getLatLng().lng;
@@ -81,5 +58,6 @@ function onClick(e) {
         });
       }
     }).addTo(map);
+    map.fitBounds(bar.getBounds());
   })
 }
