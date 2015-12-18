@@ -219,8 +219,9 @@ if (typeof module !== undefined) module.exports = polyline;
       var un = this.options.unitNames,
           v,
         data;
-
       if (this.options.units === 'imperial') {
+        //valhalla returns distance in km 
+        d  = d * 1000;
         d = d / 1.609344;
         if (d >= 1000) {
           data = {
@@ -357,16 +358,17 @@ if (typeof module !== undefined) module.exports = polyline;
   L.Routing = L.Routing || {};
 
   L.Routing.Valhalla = L.Class.extend({
-    options: {
-      serviceUrl: '//valhalla.mapzen.com/',
-      timeout: 30 * 1000,
-      transitmode: 'auto'
-    },
 
-    initialize: function(accessToken, transitmode, options) {
-      L.Util.setOptions(this, options);
+
+    initialize: function(accessToken, transitmode, costingOptions, options) {
+      L.Util.setOptions(this, options || {
+        serviceUrl: '//valhalla.mapzen.com/',
+        timeout: 30 * 1000,
+        transitmode: 'auto'
+      });
       this._accessToken = accessToken;
       this._transitmode = transitmode;
+      this._costingOptions = costingOptions;
       this._hints = {
         locations: {}
       };
@@ -415,9 +417,10 @@ if (typeof module !== undefined) module.exports = polyline;
             data = JSON.parse(resp.responseText);
             this._routeDone(data, wps, callback, context);
           } else {
+            console.log("Error : " + err.response);
             callback.call(context || callback, {
               status: err.status,
-              message: err.responseText
+              message: err.response
             });
           }
         }
@@ -513,6 +516,7 @@ if (typeof module !== undefined) module.exports = polyline;
           hint;
       var transitM = options.transitmode || this._transitmode;
       var streetName = options.street;
+      var costingOptions = this._costingOptions;
       this._transitmode = transitM;
 
       for (var i = 0; i < waypoints.length; i++) {
@@ -534,11 +538,12 @@ if (typeof module !== undefined) module.exports = polyline;
         locs.push(loc);
       }
 
-       var params = JSON.stringify({
-         locations: locs,
-         costing: transitM,
-         street: streetName
-       });
+      var params = JSON.stringify({
+        locations: locs,
+        costing: transitM,
+        street: streetName,
+        costing_options: costingOptions
+      });
 
       return this.options.serviceUrl + 'route?json=' +
               params + '&api_key=' + this._accessToken;
@@ -589,7 +594,6 @@ if (typeof module !== undefined) module.exports = polyline;
           });
         }
       }
-
       return result;
     },
 
