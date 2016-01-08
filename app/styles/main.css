@@ -11,3 +11,19 @@
         font-size: 20px;
         margin-top: 8px;
     }
+
+
+    .infoBox {
+        padding: 6px 8px;
+        font: 15px Arial, Helvetica, sans-serif;
+        background: #97C1C7;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        display: block
+    }
+
+    .infoBox h1 {
+        font-size: 18px;
+        font-weight: bold;
+    	text-align: center;
+    }

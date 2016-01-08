@@ -15,7 +15,7 @@ html,body{
 
 .leaflet-routing-container {
     width: 320px;
-    background-color: white;
+    background-color: #97C1C7;
     padding-top: 4px;
     transition: all 0.2s ease;
 }
@@ -48,7 +48,7 @@ html,body{
     transition: all 0.2s ease;
 }
 
-.leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-alt, 
+.leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-alt,
 .leaflet-control-container .leaflet-routing-container-hide .leaflet-routing-geocoders {
     display: none;
 }

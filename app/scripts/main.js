@@ -1,5 +1,4 @@
 var map = L.map('map', {zoomControl: false}).setView([39.739800, -104.911276], 11);
-new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
@@ -13,6 +12,9 @@ var stations = $.getJSON("https://darkvengers.cartodb.com/api/v2/sql?format=GeoJ
       layer.cartodb_id = feature.properties.cartodb_id;
       layer.bindPopup('' + feature.properties.name + '');
       layer.on("click", addOnClick);
+      layer.on("click", function(){
+        infoBox.update(layer.feature.properties);
+      })
     },
     pointToLayer: function(feature, latlng) {
       return L.marker(latlng, {
@@ -67,6 +69,7 @@ function addRouting(e) {
   routeControl.RoutingErrorEvent;
 };
 
+var stnName = undefined;
 function addOnClick(e) {
   lat = this.getLatLng().lat;
   lng = this.getLatLng().lng;
@@ -95,3 +98,23 @@ function addOnClick(e) {
     map.fitBounds(bar.getBounds());
   })
 };
+
+//info box
+var infoBox = L.control({
+  position: 'topleft'
+});
+
+infoBox.onAdd = function(map) {
+  this._div = L.DomUtil.create('div', 'infoBox');
+  this.update();
+  return this._div;
+};
+
+infoBox.update = function(props) {
+  this._div.innerHTML = '<h1>Ride and Drink</h1><hr><p>Click on a station to find the nearest bars.<p>' + (props ?
+    '<h1><b>' + props.name + '</b></h1>' : '');
+};
+
+
+infoBox.addTo(map);
+//end info box
